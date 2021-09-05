@@ -1,0 +1,32 @@
+/*eslint-disable*/
+const webpack = require('webpack');
+const { pages } = require('./src/utils/autoCreatePage');
+/*eslint-enable*/
+
+module.exports = {
+  publicPath: '/pprice/v5',
+  outputDir: 'dist/v5',
+  pages,
+  configureWebpack: {
+    plugins: [
+      new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/),
+    ],
+  },
+  css: {
+    loaderOptions: {
+      less: {
+        javascriptEnabled: true,
+      },
+    },
+  },
+  devServer: {
+    proxy: {
+      '/': {
+        target: 'http://dev.gongkongsaas.com',
+        changeOrigin: true,
+        pathRewrite: { '^/': '/' },
+        cookieDomainRewrite: '',
+      },
+    },
+  },
+};
